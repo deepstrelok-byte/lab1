@@ -1,4 +1,3 @@
-print("Модуль RPNcalc_fin импортирован")
 def infix_to_polish(expression):
     output = [] #выражение
     stack = [] #стек операторов

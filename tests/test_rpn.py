@@ -4,7 +4,7 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 
-import RPNcalc_fin as rpn
+import rpn as rpn
 
 @pytest.mark.parametrize("expr, expected", [
     ("1 + 2", "1 2 +"),

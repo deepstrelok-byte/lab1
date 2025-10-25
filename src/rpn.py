@@ -117,7 +117,6 @@ if __name__ == "__main__":
         try:
             polish = infix_to_polish(user_input)
             result = calculate_polish(polish)
-            print("Польская нотация:", polish)
             print("Результат:", result)
         except ValueError as e:
             print("Ошибка:", e)

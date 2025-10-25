@@ -1,8 +1,7 @@
-print("Модуль RPNcalc_fin импортирован")
 def infix_to_polish(expression):
     output = [] #выражение
     stack = [] #стек операторов
-    priority = {'+': 1, '-': 1, '*': 2, '/': 2}
+    priority = {'+': 1, '-': 1, '*': 2, '/': 2, '**': 3}
 
     i = 0
     while i < len(expression):
@@ -22,8 +21,16 @@ def infix_to_polish(expression):
             output.append(num_str)
             continue
 
+        elif char == '*' and i + 1 < len(expression) and expression[i + 1] == '*':
+            while (stack and stack[-1] != '(' and
+                   priority.get(stack[-1], 0) >= priority.get('**', 0)):
+                output.append(stack.pop())
+            stack.append('**')
+            i += 2
+            continue
+
         # Обработка отрицательных чисел (унарный минус)
-        elif char == '-' and (i == 0 or expression[i - 1] in '(+*-/'): #если минус в начале или после операторов
+        elif char == '-' and (i == 0 or expression[i - 1] in '(+*-/**') : #если минус в начале или после операторов
             if i + 1 < len(expression) and (expression[i + 1].isdigit() or expression[i + 1] == '.'):
                 num_str = '-'
                 i += 1
@@ -42,7 +49,7 @@ def infix_to_polish(expression):
                 continue
 
         # Теперь обработка бинарных операторов
-        elif char in '+-*/':
+        elif char in '+-*/' or (char == '*' and i + 1 < len(expression) and expression[i + 1] == '*'):
             while (stack and stack[-1] != '(' and
                    priority.get(stack[-1], 0) >= priority.get(char, 0)):
                 output.append(stack.pop())
@@ -72,7 +79,7 @@ def calculate_polish(expression):
     tokens = expression.split()
 
     for token in tokens:
-        if token in ['+', '-', '*', '/']:
+        if token in ['+', '-', '*', '**', '/']:
             if len(stack) < 2:
                 raise ValueError(f"Мало чисел для операции '{token}'")
 
@@ -85,6 +92,8 @@ def calculate_polish(expression):
                 result = a - b
             elif token == '*':
                 result = a * b
+            elif token == '**':
+                result = a ** b
             elif token == '/':
                 if b == 0:
                     raise ValueError("Деление на ноль")
@@ -102,11 +111,6 @@ def calculate_polish(expression):
         raise ValueError(f"Некорректное выражение. В стеке остались необработанные числа: {stack}")
 
     return stack[0]
-
-
-# Основная программа
-print("Это польский калькулятор")
-print("Для выхода введите 'q'")
 
 if __name__ == "__main__":
         user_input = input("Введите выражение: ").strip()

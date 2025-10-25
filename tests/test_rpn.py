@@ -27,6 +27,7 @@ def test_infix_to_polish_basic(expr, expected):
     ("2 3 4 + *", 14.0),
     ("3.5 2 *", 7.0),
     ("-5 3 +", -2.0),
+    ("8 3 **", 512.0)
 ])
 def test_calculate_polish_basic(rpn_expr, expected):
     assert rpn.calculate_polish(rpn_expr) == expected

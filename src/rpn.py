@@ -10,9 +10,8 @@ def infix_to_polish(expression):
             i += 1
             continue
 
-        # Обработка чисел (включая отрицательные!!!)
+        # Обработка чисел
         if char.isdigit() or char == '.':
-            # Положительное число
             num_str = char
             i += 1
             while i < len(expression) and (expression[i].isdigit() or expression[i] == '.'):
